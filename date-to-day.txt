@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define fast ios_base::sync_with_stdio(false);cin.tie(NULL);
+#define ll long long int
+#define input1(n) ll n;cin>>n;
+
+string days[]={"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
+string dayofweek(int d, int m, int y)  
+{  
+    static int t[] = { 0, 3, 2, 5, 0, 3, 
+                       5, 1, 4, 6, 2, 4 };  
+    y -= m < 3;  
+    ll z=( y + y / 4 - y / 100 +  y / 400 + t[m - 1] + d) % 7;  
+    return days[z];
+}  
+int main(){
+	fast;
+	input1(n);
+	unordered_map<string,ll>mp;
+	for(ll i=0;i<n;i++){
+	    string a;
+	    ll b;
+	    cin>>a>>b;
+	    mp[a]+=b;
+	}
+ 	unordered_map<string,ll> res;
+ 	for(auto x:mp)
+ 	cout<<x.first<<" "<<x.second<<"\n";
+	for (auto x:mp){
+	    ll d=stoi(x.first.substr(8,9));
+	    ll m=stoi(x.first.substr(5,6));
+	    ll y=stoi(x.first.substr(0,4));
+	    string z=dayofweek(d,m,y);
+	    //cout<<d<<" "<<m<<" "<<y<<"\n";
+	    res[z]+=x.second;
+	}
+	for(ll i=0;i<7;i++){
+	    if(res.find(days[i])==res.end())
+	    res[days[i]]=(res[days[(7+(i-1))%7]]+res[days[(i+1)%7]])/2;
+	}
+	for(ll i=0;i<7;i++)
+	cout<<days[i]<<" "<<res[days[i]]<<"\n";
+	return 0;
+}
